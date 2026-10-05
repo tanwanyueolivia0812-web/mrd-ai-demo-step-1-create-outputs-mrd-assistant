@@ -1,0 +1,48 @@
+# Dependencies and generated output
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+# Environment files and credentials (example is safe to commit)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+secrets*.json
+# Local caches and deployment state
+.vercel/
+.vite/
+.cache/
+.npm/
+.pnpm-store/
+.turbo/
+.eslintcache
+# Local uploads and temporary files
+uploads/
+tmp/
+temp/
+work/
+*.tmp
+*.log
+.DS_Store
+
+# Additional private credential formats and local auth configuration
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+.npmrc
+.netrc
+.git-credentials
+.aws/
+.ssh/
+credentials/
+secrets/
+*service-account*.json
+*service_account*.json

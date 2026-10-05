@@ -1,0 +1,12 @@
+export const FOCUSES=[{id:'user',name:'用户需求',description:'了解用户痛点、行为和真实需求'},{id:'competitor',name:'竞品分析',description:'分析主要产品、核心能力和差异'},{id:'market',name:'市场趋势',description:'分析行业趋势、增长方向和变化'},{id:'opportunity',name:'产品机会',description:'寻找现有市场中的未满足需求'}];
+export const TAGS=['大学生','高频 AI 用户','时间管理困难','多课程学习','Assignment 较多','考试备考'];
+export const MARKETS=['全球','中国','澳大利亚','美国','东南亚','自定义'];
+export const LANGUAGES=['中文','英文','中文 + 英文'];
+export const DEPTHS=[{name:'快速扫描',description:'快速发现主要竞品和市场机会'},{name:'标准研究',description:'平衡速度和研究深度'},{name:'深度研究',description:'查看更多来源和细分信息'}];
+export const DEFAULT_PROJECT={version:2,name:'大学生 AI 学习助手',idea:'我想做一个面向大学生的 AI 学习助手，帮助学生管理课程、Assignment、考试和学习计划。AI 可以根据课程安排、DDL 和用户可用时间自动生成学习计划，并根据实际完成情况动态调整。',question:'大学生在学习规划、时间管理和学习效率方面有哪些核心痛点？目前有哪些主要竞品？现有产品还有哪些未满足需求？这个方向是否存在值得进入的产品机会？',target:'18-25 岁大学生，特别是课程和任务较多、时间管理能力一般，并且已经开始使用 AI 工具辅助学习的学生。',tags:['大学生','时间管理困难','多课程学习'],market:'全球',customMarket:'',language:'中文 + 英文',depth:'标准研究',focus:FOCUSES.map(f=>f.id),context:'目前已知 Notion AI、Quizlet 和 ChatGPT 都可以辅助学习，但它们更偏内容生成或知识学习，对长期学习计划管理的支持可能有限。',materials:[]};
+export const DRAFT_KEY='mrd-research-brief-v2';
+export const SESSION_KEY='mrd-research-active-v2';
+export const isReady=p=>!!(p.name.trim()&&p.idea.trim()&&p.question.trim());
+export function normalize(p){if(!p||p.version!==2)return null;const result={...DEFAULT_PROJECT,...p};for(const key of ['name','idea','question','target','customMarket','context'])if(typeof result[key]!=='string')result[key]=DEFAULT_PROJECT[key];for(const [key,options] of /** @type {[string, string[]][]} */ ([['focus',FOCUSES.map(f=>f.id)],['tags',TAGS]]))result[key]=Array.isArray(result[key])?result[key].filter(v=>options.includes(v)):DEFAULT_PROJECT[key];for(const [key,options] of /** @type {[string, string[]][]} */ ([['market',MARKETS],['language',LANGUAGES],['depth',DEPTHS.map(d=>d.name)]]))if(!options.includes(result[key]))result[key]=DEFAULT_PROJECT[key];result.materials=Array.isArray(result.materials)?result.materials.filter(m=>m&&typeof m.id==='string'&&typeof m.name==='string'&&['user','internal','existing'].includes(m.category)&&typeof m.size==='number'&&typeof m.type==='string'&&typeof m.addedAt==='number'&&(!m.content||typeof m.content==='string')):[];return result;}
+export function readProject(key,storage){try{return normalize(JSON.parse(storage.getItem(key)))}catch{return null}}
+export function loadProject(){return readProject(SESSION_KEY,sessionStorage)||readProject(DRAFT_KEY,localStorage)||DEFAULT_PROJECT;}
